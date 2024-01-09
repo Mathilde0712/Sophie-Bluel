@@ -1,0 +1,22 @@
+{
+  "folders": [
+	{
+		"path": "../../../../From Scratch/Le data JS/Cours"
+	},
+	{
+		"path": "../../../../From Scratch/Le data JS/form-checker"
+	},
+	{
+		"path": "../../../../From Scratch/Le data JS/password-maker"
+	},
+	{
+		"path": "../../../../From Scratch/Le data JS/text-anim"
+	},
+	{
+		"path": "../../../../From Scratch/Les API"
+	}
+],
+  "settings": {
+    "liveServer.settings.multiRootWorkspaceName": "Les API"
+  }
+}
