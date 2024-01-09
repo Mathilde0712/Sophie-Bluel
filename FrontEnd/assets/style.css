@@ -137,6 +137,36 @@ li:hover {
 	width: 100%;
 
 }
+
+.filter-container{
+	text-align: center;
+	margin: 58px 10px;
+	
+}
+
+input[type="checkbox"]{
+	display: none;
+}
+
+input[type="checkbox"]:checked + label{
+	background-color: #1D6154;
+	color :white;
+}
+
+label {
+	border:1px solid #1D6154;
+	border-radius : 20px;
+	padding : 9px 25px;
+	margin-top: 50px;
+	color : #1D6154;
+	font-weight: 700;
+
+	
+	
+	
+
+}
+
 #contact {
 	width: 50%;
 margin: auto;
