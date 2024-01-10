@@ -140,31 +140,23 @@ li:hover {
 
 .filter-container{
 	text-align: center;
-	margin: 58px 10px;
+	margin: 51px 10px;
 	
 }
 
-input[type="checkbox"]{
-	display: none;
-}
-
-input[type="checkbox"]:checked + label{
-	background-color: #1D6154;
-	color :white;
-}
-
-label {
+.all,.objects,.apartments,.hotels {
+	background-color: transparent;
 	border:1px solid #1D6154;
 	border-radius : 20px;
 	padding : 9px 25px;
-	margin-top: 50px;
 	color : #1D6154;
 	font-weight: 700;
+	cursor:pointer;
+}
 
-	
-	
-	
-
+.checked{
+	background-color: #1D6154;
+	color :white;
 }
 
 #contact {
