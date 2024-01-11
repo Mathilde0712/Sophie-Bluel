@@ -10,25 +10,36 @@ const gallery = document.querySelector(".gallery");
 // variable pour récupérer données API
 //les projets
 const fetchWork = async () => {
-  await fetch("http://localhost:5678/api/works")
-    .then((res) => res.json())
-    .then((data) => (workData = data));
+  try {
+    await fetch("http://localhost:5678/api/works")
+      .then((res) => res.json())
+      .then((data) => (workData = data));
+  } catch (error) {
+    console.error("Erreur !");
+  }
   //console.log(workData);
 };
-//Les catégories
-const fetchCategory = async () => {
-  await fetch("http://localhost:5678/api/categories")
-    .then((res) => res.json())
-    .then((category) => (categoriesData = category));
-  //console.log(categoriesData);
-};
-fetchCategory();
 
-//afficher le display avec une async pour avoir le temps de récupérer
-//les données de l'API
-const workDisplay = async () => {
+//Les catégories
+// const fetchCategory = async () => {
+//   await fetch("http://localhost:5678/api/categories")
+//     .then((res) => res.json())
+//     .then((category) => (categoriesData = category));
+//   //console.log(categoriesData);
+// };
+// fetchCategory();
+
+const filteredWorkData = (myData, category) => {
+  if (category === "Tous") return myData;
+  return myData.filter((work) => work.category.name === category);
+};
+
+//fonction pour filtrer les catégories et les afficher = fonction générale avec base catégorie TOUS
+const workDisplay = async (category = "Tous") => {
   await fetchWork();
-  gallery.innerHTML = workData
+  const myData = filteredWorkData(workData, category);
+  //console.log(myData, category);
+  gallery.innerHTML = myData
     .map(
       (work) =>
         `
@@ -43,53 +54,35 @@ const workDisplay = async () => {
 
 workDisplay();
 
-//filtrer les projets
-const filterObjects = async () => {
-  await fetchWork();
-  const objectsFilter = workData.filter((work) => {
-    return work.category.name === "Objets";
+//creation fonction pour mettre la classe checked sur les boutons et l'enlever !
+const setActiveButton = (activeBtn) => {
+  const buttons = document.querySelectorAll(".btn");
+  buttons.forEach((button) => {
+    if (button === activeBtn) {
+      button.classList.add("checked");
+    } else {
+      button.classList.remove("checked");
+    }
   });
-  console.log(objectsFilter);
 };
 
-const filterApartments = async () => {
-  await fetchWork();
-  const apartmentsFilter = workData.filter((work) => {
-    return work.category.name === "Appartements";
-  });
-  console.log(apartmentsFilter);
-};
-
-const filterHotels = async () => {
-  await fetchWork();
-  const hotelsFilter = workData.filter((work) => {
-    return work.category.name === "Hotels & restaurants";
-  });
-  console.log(hotelsFilter);
-};
-
-const filterAll = async () => {
-  await fetchWork();
-  const allFilter = workData;
-  console.log(allFilter);
-};
-
+//ecouteurs d'évènements au click
 objects.addEventListener("click", () => {
-  filterObjects();
-  //gallery.innerHTML = "";
+  workDisplay("Objets");
+  setActiveButton(objects);
 });
 
 apartments.addEventListener("click", () => {
-  filterApartments();
+  workDisplay("Appartements");
+  setActiveButton(apartments);
 });
 
 hotels.addEventListener("click", () => {
-  filterHotels();
+  workDisplay("Hotels & restaurants");
+  setActiveButton(hotels);
 });
 
 all.addEventListener("click", () => {
-  filterAll();
+  workDisplay();
+  setActiveButton(all);
 });
-
-//filterObjects();
-//console.log(arrayNumber.filter((number) => number > 10)
