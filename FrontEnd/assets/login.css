@@ -99,9 +99,10 @@ li:hover {
 	color: #B1663C;
 }
 
-a{
+nav a{
 	text-decoration: none;
-	color:black
+	color:black;
+    font-weight: bold;
 }
 
 nav a:hover{
@@ -110,10 +111,51 @@ nav a:hover{
 
 form a{
 	text-decoration: underline;
+    color: black;
 	text-underline-offset: 2px;
+    
 	
 }
+/*ajout login
+*/
+#login {
+	width: 50%;
+margin: auto;
 
+}
+#login > * {
+	text-align: center;
+
+}
+#login h2{
+	margin-bottom: 20px;
+}
+#login form {
+	text-align: left;
+	margin-top:30px;
+	display: flex;
+	flex-direction: column;
+}
+
+#login input {
+	height: 50px;
+	font-size: 1.2em;
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+#login label {
+	margin: 2em 0 1em 0;
+}
+#login textarea {
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+
+#login a{
+	text-align: center;
+}
+
+/*fin ajout login*/
 #introduction {
 	display: flex;
 	align-items: center;
@@ -143,72 +185,6 @@ form a{
 }
 
 
-.gallery {
-	width: 100%;
-	display: grid;
-	grid-template-columns: 1fr 1fr 1fr;
-	grid-column-gap: 20px;
-	grid-row-gap: 20px;
-}
-
-.gallery img {
-	width: 100%;
-
-}
-
-.filter-container{
-	text-align: center;
-	margin: 51px 10px;
-	
-}
-/*Ajout style pour boutons filtres*/
-.all,.objects,.apartments,.hotels {
-	background-color: transparent;
-	border:1px solid #1D6154;
-	border-radius : 20px;
-	padding : 9px 25px;
-	color : #1D6154;
-	font-weight: 700;
-	cursor:pointer;
-}
-
-.checked{
-	background-color: #1D6154;
-	color :white;
-}
-
-#contact {
-	width: 50%;
-margin: auto;
-}
-#contact > * {
-	text-align: center;
-
-}
-#contact h2{
-	margin-bottom: 20px;
-}
-#contact form {
-	text-align: left;
-	margin-top:30px;
-	display: flex;
-	flex-direction: column;
-}
-
-#contact input {
-	height: 50px;
-	font-size: 1.2em;
-	border: none;
-	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
-}
-#contact label {
-	margin: 2em 0 1em 0;
-}
-#contact textarea {
-	border: none;
-	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
-}
-
 input[type="submit"]{
 	font-family: 'Syne';
 	font-weight: 700;
@@ -223,6 +199,7 @@ input[type="submit"]{
 footer nav ul {
 	display: flex;
 	justify-content: flex-end;
-	margin: 2em
+	margin: 2em;
+	
 }
 
