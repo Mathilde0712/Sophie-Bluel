@@ -155,6 +155,10 @@ margin: auto;
 	text-align: center;
 }
 
+span{
+	margin-top: 20px;
+}
+
 /*fin ajout login*/
 #introduction {
 	display: flex;
