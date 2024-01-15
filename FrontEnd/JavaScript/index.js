@@ -6,6 +6,14 @@ const all = document.querySelector(".all");
 const apartments = document.querySelector(".apartments");
 const hotels = document.querySelector(".hotels");
 const gallery = document.querySelector(".gallery");
+const FilterContainer = document.querySelector(".filter-container");
+const modify = document.querySelector(".modify");
+const logout = document.getElementById("logout");
+const edition = document.querySelector(".edition_mode");
+const header = document.querySelector("header");
+const modal = document.querySelector(".modal");
+const close = document.querySelector(".fa-xmark");
+const galleryModal = document.querySelector(".gallery-modal");
 
 // variable pour récupérer données API
 //les projets
@@ -21,13 +29,13 @@ const fetchWork = async () => {
 };
 
 //Les catégories
-// const fetchCategory = async () => {
-//   await fetch("http://localhost:5678/api/categories")
-//     .then((res) => res.json())
-//     .then((category) => (categoriesData = category));
-//   //console.log(categoriesData);
-// };
-// fetchCategory();
+const fetchCategory = async () => {
+  await fetch("http://localhost:5678/api/categories")
+    .then((res) => res.json())
+    .then((category) => (categoriesData = category));
+  //console.log(categoriesData);
+};
+fetchCategory();
 
 const filteredWorkData = (myData, category) => {
   if (category === "Tous") return myData;
@@ -86,3 +94,54 @@ all.addEventListener("click", () => {
   workDisplay();
   setActiveButton(all);
 });
+
+//modifier le code html après connection
+
+const tokenData = sessionStorage.getItem("token");
+
+if (tokenData) {
+  logout.innerHTML = "logout";
+  edition.style.visibility = "visible";
+  header.style.margin = "50px 0";
+  FilterContainer.style.display = "none";
+  modify.style.visibility = "visible";
+}
+
+//faire apparaitre la modal au click de modifier et la supprimer en cliquant sur la croix
+
+const openModal = () => {
+  modal.style.visibility = "visible";
+};
+
+const closeModal = () => {
+  modal.style.visibility = "hidden";
+};
+
+modify.addEventListener("click", (e) => {
+  e.preventDefault();
+  openModal();
+  //modalDisplay();
+});
+
+close.addEventListener("click", (e) => {
+  e.preventDefault();
+  closeModal();
+});
+
+// ajouter les images dans la modale :
+const modalDisplay = async () => {
+  await fetchWork();
+  galleryModal.innerHTML = workData
+    .map(
+      (work) =>
+        `
+    <figure>
+  <img src = "${work.imageUrl}" alt="Photo de ${work.title}">
+<i class="fa-solid fa-trash-can"></i>
+  </figure>
+  `
+    )
+    .join("");
+};
+
+modalDisplay();
