@@ -1,21 +1,36 @@
+//variables pour mettre dans un tableau les données de l'API
 let workData = [];
 let categoriesData = [];
 
+//variables pour récupérer le conteneur de la gallerie
+const gallery = document.querySelector(".gallery");
+//variables pour sélectionne le conteneur des filtres
+const FilterContainer = document.querySelector(".filter-container");
+//Variables pour sélectionner les filtres du DOM
 const objects = document.querySelector(".objects");
 const all = document.querySelector(".all");
 const apartments = document.querySelector(".apartments");
 const hotels = document.querySelector(".hotels");
-const gallery = document.querySelector(".gallery");
-const FilterContainer = document.querySelector(".filter-container");
-const modify = document.querySelector(".modify");
-const logout = document.getElementById("logout");
+//variable pour sélectionner le block édition
 const edition = document.querySelector(".edition_mode");
+//variable pour selectionner le header
 const header = document.querySelector("header");
+//variable pour selectionner le text login/logout
+const logout = document.getElementById("logout");
+//variables pour sélectionner le conteneur modifier
+const modify = document.querySelector(".modify");
+//variable pour selectionner le aside modal
 const modal = document.querySelector(".modal");
-const close = document.querySelector(".fa-xmark");
+//variable pour sélectionner la croix de la modale
+const close1 = document.querySelector(".modal-wrapper .fa-xmark");
+const close2 = document.querySelector(".modal-add .fa-xmark");
+//variable pour sélectionner la gallerie dans la modale
 const galleryModal = document.querySelector(".gallery-modal");
+const addPhoto = document.querySelector(".add-photo");
+const modal2 = document.querySelector(".modal2");
+const previous = document.querySelector(".modal-add .fa-arrow-left");
 
-// variable pour récupérer données API
+// variable pour récupérer données API-----------------------------------------------------------------------------------------------------------
 //les projets
 const fetchWork = async () => {
   try {
@@ -25,7 +40,6 @@ const fetchWork = async () => {
   } catch (error) {
     console.error("Erreur !");
   }
-  //console.log(workData);
 };
 
 //Les catégories
@@ -37,12 +51,12 @@ const fetchCategory = async () => {
 };
 fetchCategory();
 
+//fonction pour filtrer les catégories et les afficher = fonction générale avec base catégorie TOUS----------------------------------------------
 const filteredWorkData = (myData, category) => {
   if (category === "Tous") return myData;
   return myData.filter((work) => work.category.name === category);
 };
 
-//fonction pour filtrer les catégories et les afficher = fonction générale avec base catégorie TOUS
 const workDisplay = async (category = "Tous") => {
   await fetchWork();
   const myData = filteredWorkData(workData, category);
@@ -62,7 +76,7 @@ const workDisplay = async (category = "Tous") => {
 
 workDisplay();
 
-//creation fonction pour mettre la classe checked sur les boutons et l'enlever !
+//creation fonction pour mettre la classe checked sur les boutons et l'enlever -------------------------------------------------------------------
 const setActiveButton = (activeBtn) => {
   const buttons = document.querySelectorAll(".btn");
   buttons.forEach((button) => {
@@ -74,7 +88,7 @@ const setActiveButton = (activeBtn) => {
   });
 };
 
-//ecouteurs d'évènements au click
+//ecouteurs d'évènements pour filtrer au click---------------------------------------------------------------------------------------------------------------------
 objects.addEventListener("click", () => {
   workDisplay("Objets");
   setActiveButton(objects);
@@ -95,10 +109,10 @@ all.addEventListener("click", () => {
   setActiveButton(all);
 });
 
-//modifier le code html après connection
-
+//modifier le code html après connexion---------------------------------------------------------------------------------
+//recuperer le token
 const tokenData = sessionStorage.getItem("token");
-
+//si token connecté alors changer  styles
 if (tokenData) {
   logout.innerHTML = "logout";
   edition.style.visibility = "visible";
@@ -107,8 +121,7 @@ if (tokenData) {
   modify.style.visibility = "visible";
 }
 
-//faire apparaitre la modal au click de modifier et la supprimer en cliquant sur la croix
-
+//faire apparaitre la modal au click de modifier et la supprimer en cliquant sur la croix-------------------------------------------
 const openModal = () => {
   modal.style.visibility = "visible";
 };
@@ -120,15 +133,15 @@ const closeModal = () => {
 modify.addEventListener("click", (e) => {
   e.preventDefault();
   openModal();
-  //modalDisplay();
 });
 
-close.addEventListener("click", (e) => {
+close1.addEventListener("click", (e) => {
   e.preventDefault();
   closeModal();
 });
 
-// ajouter les images dans la modale :
+// console.log(workData.id);
+
 const modalDisplay = async () => {
   await fetchWork();
   galleryModal.innerHTML = workData
@@ -137,11 +150,57 @@ const modalDisplay = async () => {
         `
     <figure>
   <img src = "${work.imageUrl}" alt="Photo de ${work.title}">
-<i class="fa-solid fa-trash-can"></i>
+  <i class="fa-solid fa-trash-can" data-id="${work.id}"></i>
   </figure>
   `
     )
     .join("");
+  //ajout du click sur les poubelles
+  const trashCans = document.querySelectorAll(".gallery-modal .fa-trash-can");
+  trashCans.forEach((trash) => {
+    const workId = trash.dataset.id;
+    trash.addEventListener("click", async () => {
+      await fetchDelete(workId);
+      alert("vous avez cliqué sur la poubelle");
+    });
+  });
 };
 
 modalDisplay();
+
+const fetchDelete = async (id) => {
+  try {
+    let id = workData.id; //ne comprends pas pourquoi cela ne fonctionne pas
+    const res = await fetch("http://localhost:5678/api/works/${id}", {
+      method: "DELETE",
+      headers: {
+        Authorization: "Bearer " + tokenData,
+      },
+    }).then(() => console.log("suppression réussie"));
+    if (!res.ok) console.error("Erreur lors de la suppression du projet");
+  } catch (error) {
+    console.error("Erreur !");
+  }
+};
+
+const openModal2 = () => {
+  modal2.style.visibility = "visible";
+};
+
+addPhoto.addEventListener("click", (e) => {
+  openModal2();
+});
+
+const closeModal2 = () => {
+  modal2.style.visibility = "hidden";
+};
+
+close2.addEventListener("click", (e) => {
+  e.preventDefault();
+  closeModal2();
+});
+
+previous.addEventListener("click", (e) => {
+  e.preventDefault();
+  closeModal2();
+});

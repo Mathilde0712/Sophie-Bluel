@@ -42,13 +42,36 @@
 		</article>
 	</section>
 	<section id="portfolio">
+		
 		  <aside id="modal1" class="modal">
 			<div class="modal-wrapper">
 				<i class="fa-solid fa-xmark"></i>
-				<h3 id="title-modal">Galerie photo</h3>
+				<h3 class="title-modal">Galerie photo</h3>
 					<div class="gallery-modal">
 					</div>
 				<input class="add-photo" type="submit" value="Ajouter une photo">
+				
+			</div>
+		</aside>
+		<aside id="modal2" class="modal2">
+			<div class="modal-add">
+				<i class="fa-solid fa-arrow-left"></i>
+				<i class="fa-solid fa-xmark"></i>
+				<h3 class="title-modal">Ajout photo</h3>
+					<div class="add-picture">
+					<div class="bg-picture">
+						<i class="fa-regular fa-image"></i>
+						<input class="addPhotobtn" type="submit" value="+ Ajouter photo">
+						<p>jpg,png : 4mo max</p>
+					</div>
+					<form method="POST" action="#">
+						<label for="title">Titre</label>
+						<input type="text" name="title" id="title">
+						<label for="select">Catégorie</label>
+						<select name="select" id="select" required></select>
+					</form>
+			</div>
+			<input class="valid" type="submit" value="Valider">
 			</div>
 		</aside>
 		<div class="title">
