@@ -29,7 +29,8 @@ const galleryModal = document.querySelector(".gallery-modal");
 const addPhoto = document.querySelector(".add-photo");
 const modal2 = document.querySelector(".modal2");
 const previous = document.querySelector(".modal-add .fa-arrow-left");
-
+const select = document.getElementById("select");
+const option = document.createElement("option");
 // variable pour récupérer données API-----------------------------------------------------------------------------------------------------------
 //les projets
 const fetchWork = async () => {
@@ -47,10 +48,12 @@ const fetchCategory = async () => {
   await fetch("http://localhost:5678/api/categories")
     .then((res) => res.json())
     .then((category) => (categoriesData = category));
-  //console.log(categoriesData);
+  console.log(categoriesData);
 };
 fetchCategory();
 
+fetchCategory();
+console.log(categoriesData);
 //fonction pour filtrer les catégories et les afficher = fonction générale avec base catégorie TOUS----------------------------------------------
 const filteredWorkData = (myData, category) => {
   if (category === "Tous") return myData;
@@ -155,15 +158,6 @@ const modalDisplay = async () => {
   `
     )
     .join("");
-  //ajout du click sur les poubelles
-  const trashCans = document.querySelectorAll(".gallery-modal .fa-trash-can");
-  trashCans.forEach((trash) => {
-    const workId = trash.dataset.id;
-    trash.addEventListener("click", async () => {
-      await fetchDelete(workId);
-      alert("vous avez cliqué sur la poubelle");
-    });
-  });
 };
 
 modalDisplay();
@@ -183,6 +177,7 @@ const fetchDelete = async (id) => {
   }
 };
 
+// ouvrir la modale pour ajouter une photo ----------------------
 const openModal2 = () => {
   modal2.style.visibility = "visible";
 };
@@ -204,3 +199,23 @@ previous.addEventListener("click", (e) => {
   e.preventDefault();
   closeModal2();
 });
+
+const trashCans = document.querySelectorAll(".gallery-modal .fa-trash-can");
+trashCans.forEach((trash) => {
+  const workId = trash.dataset.id;
+  trash.addEventListener("click", async () => {
+    await fetchDelete(workId);
+    alert("vous avez cliqué sur la poubelle");
+  });
+});
+
+const selectDisplay = async () => {
+  await fetchCategory();
+  select.innerHTML = categoriesData.map(
+    (category) =>
+      `
+  <option>${category.name}</option>
+  `
+  );
+};
+selectDisplay();
