@@ -60,9 +60,15 @@
 				<h3 class="title-modal">Ajout photo</h3>
 					<div class="add-picture">
 					<div class="bg-picture">
-						<i class="fa-regular fa-image"></i>
-						<input class="addPhotobtn" type="submit" value="+ Ajouter photo">
-						<p>jpg,png : 4mo max</p>
+						<div class ="input-addPhoto">
+						<span><i class="fa-regular fa-image" aria-hidden="true"></i></span>
+						<label id="image" class="addPhotoBtn" for="fileItem" > + Ajouter une photo</label>
+						<input type="file"  name="fileItem" id="fileItem" value="+ Ajouter photo" accept="image/png, image/jpeg" >
+						<span>jpg,png : 4mo max</span>
+					</div>
+					<div class="imgVisuel">
+						<img src="" alt="">
+					</div>
 					</div>
 					<form method="POST" action="#">
 						<label for="title">Titre</label>

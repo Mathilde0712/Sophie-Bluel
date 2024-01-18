@@ -302,11 +302,26 @@ flex-direction: column;
   height: 169px;
   width: 420px;
 }
+
+.input-addPhoto{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  
+}
 .fa-image{
   color:#CBD6DC;
   font-size: 76px;
   margin-top :13px;
   margin-bottom: 6px;
+}
+
+.imgVisuel img{
+  width: 129px;
+  height: 169px;
+  margin-top: -170px;
+  visibility: hidden;
 }
 
 #portfolio input[type="text"]{
@@ -387,20 +402,28 @@ border: none;
 box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
 
-.addPhotobtn{
-  background-color: #CBD6DC!important;
-  color: #306685  !important;
-  font-size: 14px !important;
-  height: 37px !important;
+#image{
+  background-color: #CBD6DC;
+  color: #306685  ;
+  font-size: 14px ;
+  font-weight: 500;
+  border-radius: 50px;
   padding:10px 33px 10px 33px;
-  margin-top: 6px !important;
-  margin-bottom: 7px !important;
-  border: none;
+   margin-top: 6px !important;
+  margin-bottom: 7px !important ; 
+  display: flex;
+  align-items: center;
+ cursor: pointer;
+}
+
+#fileItem{
+  display: none;
 }
 
 .bg-picture p{
   margin-bottom: 19px;
   font-size : 10px;
+ 
 }
 
 .gallery-modal{

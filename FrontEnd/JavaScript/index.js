@@ -42,18 +42,16 @@ const fetchWork = async () => {
     console.error("Erreur !");
   }
 };
+fetchWork();
 
 //Les catégories
 const fetchCategory = async () => {
   await fetch("http://localhost:5678/api/categories")
     .then((res) => res.json())
     .then((category) => (categoriesData = category));
-  console.log(categoriesData);
 };
 fetchCategory();
 
-fetchCategory();
-console.log(categoriesData);
 //fonction pour filtrer les catégories et les afficher = fonction générale avec base catégorie TOUS----------------------------------------------
 const filteredWorkData = (myData, category) => {
   if (category === "Tous") return myData;
@@ -143,8 +141,6 @@ close1.addEventListener("click", (e) => {
   closeModal();
 });
 
-// console.log(workData.id);
-
 const modalDisplay = async () => {
   await fetchWork();
   galleryModal.innerHTML = workData
@@ -153,19 +149,31 @@ const modalDisplay = async () => {
         `
     <figure>
   <img src = "${work.imageUrl}" alt="Photo de ${work.title}">
-  <i class="fa-solid fa-trash-can" data-id="${work.id}"></i>
+  <i class="fa-solid fa-trash-can" data-id="${workData.id}"></i>
   </figure>
   `
     )
     .join("");
+  const trashCans = document.querySelectorAll(".gallery-modal .fa-trash-can");
+  trashCans.forEach((trash) => {
+    // const workId = trash.dataset.id;
+    trash.addEventListener("click", async (e) => {
+      console.log("test", e.target.id);
+      e.preventDefault;
+      alert("vous avez cliqué sur la poubelle");
+
+      // await fetchDelete(workData.id);
+    });
+  });
 };
 
 modalDisplay();
 
 const fetchDelete = async (id) => {
+  await fetchWork();
   try {
-    let id = workData.id; //ne comprends pas pourquoi cela ne fonctionne pas
-    const res = await fetch("http://localhost:5678/api/works/${id}", {
+    // let id = workData.id; //ne comprends pas pourquoi cela ne fonctionne pas
+    const res = await fetch(`http://localhost:5678/api/works/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: "Bearer " + tokenData,
@@ -200,15 +208,7 @@ previous.addEventListener("click", (e) => {
   closeModal2();
 });
 
-const trashCans = document.querySelectorAll(".gallery-modal .fa-trash-can");
-trashCans.forEach((trash) => {
-  const workId = trash.dataset.id;
-  trash.addEventListener("click", async () => {
-    await fetchDelete(workId);
-    alert("vous avez cliqué sur la poubelle");
-  });
-});
-
+// faire apparaitre les catégories dans le selecteur --------------
 const selectDisplay = async () => {
   await fetchCategory();
   select.innerHTML = categoriesData.map(
@@ -219,3 +219,20 @@ const selectDisplay = async () => {
   );
 };
 selectDisplay();
+
+// faire apparaitre visuellement l'image après le téléchargement
+const fileInput = document.getElementById("fileItem");
+const imgPreview = document.querySelector(".imgVisuel img");
+const inputAddPhoto = document.querySelector(".input-addPhoto");
+
+fileInput.addEventListener("change", (e) => {
+  for (const file of fileInput.files) {
+    console.log(file.name);
+    imgPreview.src = `http://localhost:3000/../assets/images/${file.name}`;
+    imgPreview.alt = file.name;
+    imgPreview.style.visibility = "visible";
+    inputAddPhoto.style.visibility = "hidden";
+  }
+});
+
+// tous les inputs doivent être rempli pour valider
