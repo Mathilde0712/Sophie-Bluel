@@ -194,20 +194,6 @@ addPhoto.addEventListener("click", (e) => {
   openModal2();
 });
 
-const closeModal2 = () => {
-  modal2.style.visibility = "hidden";
-};
-
-close2.addEventListener("click", (e) => {
-  e.preventDefault();
-  closeModal2();
-});
-
-previous.addEventListener("click", (e) => {
-  e.preventDefault();
-  closeModal2();
-});
-
 // faire apparaitre les catégories dans le selecteur --------------
 const selectDisplay = async () => {
   await fetchCategory();
@@ -227,7 +213,6 @@ const inputAddPhoto = document.querySelector(".input-addPhoto");
 
 fileInput.addEventListener("change", (e) => {
   for (const file of fileInput.files) {
-    console.log(file.name);
     imgPreview.src = `http://localhost:3000/../assets/images/${file.name}`;
     imgPreview.alt = file.name;
     imgPreview.style.visibility = "visible";
@@ -235,4 +220,18 @@ fileInput.addEventListener("change", (e) => {
   }
 });
 
+const closeModal2 = () => {
+  modal2.style.visibility = "hidden";
+  imgPreview.style.visibility = "hidden";
+};
+
+close2.addEventListener("click", (e) => {
+  e.preventDefault();
+  closeModal2();
+});
+
+previous.addEventListener("click", (e) => {
+  e.preventDefault();
+  closeModal2();
+});
 // tous les inputs doivent être rempli pour valider
