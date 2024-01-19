@@ -207,22 +207,31 @@ const selectDisplay = async () => {
 selectDisplay();
 
 // faire apparaitre visuellement l'image après le téléchargement
-const fileInput = document.getElementById("fileItem");
-const imgPreview = document.querySelector(".imgVisuel img");
-const inputAddPhoto = document.querySelector(".input-addPhoto");
 
-fileInput.addEventListener("change", (e) => {
-  for (const file of fileInput.files) {
-    imgPreview.src = `http://localhost:3000/../assets/images/${file.name}`;
-    imgPreview.alt = file.name;
-    imgPreview.style.visibility = "visible";
-    inputAddPhoto.style.visibility = "hidden";
-  }
+const inputAddPhoto = document.querySelector(".input-addPhoto");
+const fileInput = document.getElementById("fileItem");
+const previewImage = document.getElementById("preview");
+
+fileInput.addEventListener("change", () => {
+  const file = fileInput.files[0];
+  // Créez un objet FileReader
+  const reader = new FileReader();
+
+  reader.onload = () => {
+    previewImage.src = reader.result;
+  };
+
+  reader.readAsDataURL(file);
+  previewImage.style.visibility = "visible";
+  inputAddPhoto.style.visibility = "hidden";
 });
 
+//passer le bouton en vert quand les 3 inputs sont remplis
+
+//fermeture modal
 const closeModal2 = () => {
   modal2.style.visibility = "hidden";
-  imgPreview.style.visibility = "hidden";
+  previewImage.style.visibility = "hidden";
 };
 
 close2.addEventListener("click", (e) => {
