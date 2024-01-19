@@ -211,22 +211,56 @@ selectDisplay();
 const inputAddPhoto = document.querySelector(".input-addPhoto");
 const fileInput = document.getElementById("fileItem");
 const previewImage = document.getElementById("preview");
-
+const imgError = document.querySelector(".error");
+let fichier;
 fileInput.addEventListener("change", () => {
   const file = fileInput.files[0];
-  // Créez un objet FileReader
+  // Créez un objet FileReader : permet a des applications web de lire le contenu de fichier
+  // new permet de créer un nouvel objet à partir de 0
   const reader = new FileReader();
 
   reader.onload = () => {
     previewImage.src = reader.result;
   };
-
-  reader.readAsDataURL(file);
-  previewImage.style.visibility = "visible";
-  inputAddPhoto.style.visibility = "hidden";
+  if (file.size / 1000000 < 4) {
+    reader.readAsDataURL(file);
+    previewImage.style.visibility = "visible";
+    inputAddPhoto.style.visibility = "hidden";
+    imgError.style.visibility = "hidden";
+    fichier = file;
+  } else {
+    imgError.style.visibility = "visible";
+  }
+  console.log(fichier);
 });
 
 //passer le bouton en vert quand les 3 inputs sont remplis
+const titleInput = document.getElementById("title");
+const valid = document.querySelector(".valid");
+titleInput.addEventListener("input", (e) => {
+  console.log(e.target.value);
+  titleChecker(e.target.value);
+});
+
+let titre;
+
+const titleChecker = (value) => {
+  if (value.length < 1) {
+    console.log("manque le titre");
+    // } else if (!value.match(/^[a-zA-Z-]*$/)) {
+    //   console.log("erreur ");
+  } else {
+    console.log("pas d'erreur");
+    titre = value;
+  }
+};
+//pour que le bouton passe au vert
+if (titre && fichier) {
+  alert("vous pouvez valider");
+  valid.style.backgroundColor = "#1d6154!important";
+} else {
+  valid.style.backgroundColor = "#A7A7A7 !important";
+}
 
 //fermeture modal
 const closeModal2 = () => {
