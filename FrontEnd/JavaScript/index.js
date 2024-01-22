@@ -1,3 +1,5 @@
+// import { fetchCategory, fetchWork } from "./api.js";
+
 //variables pour mettre dans un tableau les données de l'API
 let workData = [];
 let categoriesData = [];
@@ -32,27 +34,29 @@ const previous = document.querySelector(".modal-add .fa-arrow-left");
 const select = document.getElementById("select");
 const option = document.createElement("option");
 // variable pour récupérer données API-----------------------------------------------------------------------------------------------------------
-//les projets
+// les projets
 const fetchWork = async () => {
   try {
     await fetch("http://localhost:5678/api/works")
       .then((res) => res.json())
       .then((data) => (workData = data));
   } catch (error) {
-    console.error("Erreur !");
+    console.error(error);
   }
 };
-fetchWork();
 
-//Les catégories
+// //Les catégories
 const fetchCategory = async () => {
-  await fetch("http://localhost:5678/api/categories")
-    .then((res) => res.json())
-    .then((category) => (categoriesData = category));
+  try {
+    await fetch("http://localhost:5678/api/categories")
+      .then((res) => res.json())
+      .then((category) => (categoriesData = category));
+  } catch (error) {
+    console.error(error);
+  }
 };
-fetchCategory();
 
-//fonction pour filtrer les catégories et les afficher = fonction générale avec base catégorie TOUS----------------------------------------------
+// fonction pour filtrer les catégories et les afficher = fonction générale avec base catégorie TOUS----------------------------------------------
 const filteredWorkData = (myData, category) => {
   if (category === "Tous") return myData;
   return myData.filter((work) => work.category.name === category);
@@ -201,12 +205,13 @@ const fetchDelete = async (id) => {
     });
     if (!res.ok) console.error("Erreur lors de la suppression du projet");
   } catch (error) {
-    console.error("Erreur !", error);
+    console.error(error);
   }
 };
 
 // ouvrir la modale pour ajouter une photo ----------------------
 const openModal2 = () => {
+  inputAddPhoto.style.visibility = "visible";
   modal2.style.visibility = "visible";
 };
 
@@ -268,8 +273,6 @@ titleInput.addEventListener("input", (e) => {
 const titleChecker = (value) => {
   if (value.length < 1) {
     console.log("manque le titre");
-    // } else if (!value.match(/^[a-zA-Z-]*$/)) {
-    //   console.log("erreur ");
   } else {
     console.log("pas d'erreur");
     titre = value;
@@ -288,6 +291,7 @@ const validButton = () => {
 const closeModal2 = () => {
   modal2.style.visibility = "hidden";
   previewImage.style.visibility = "hidden";
+  inputAddPhoto.style.visibility = "hidden";
 };
 
 close2.addEventListener("click", (e) => {
@@ -321,7 +325,6 @@ const fetchPhoto = async () => {
       workData = await response.json();
     }
   } catch (error) {
-    alert("attention ça n'a pas fonctionné");
     console.error(error);
   }
 };
@@ -329,7 +332,6 @@ const fetchPhoto = async () => {
 valid.addEventListener("click", async (e) => {
   e.preventDefault();
   await fetchPhoto();
-
   modalDisplay();
   workDisplay();
   closeModal();

@@ -150,6 +150,7 @@ h1 {
   font-size: 22px;
   font-weight: 800;
   color: #b1663c;
+  cursor: pointer;
 }
 
 h1 > span {
