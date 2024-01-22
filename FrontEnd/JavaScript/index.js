@@ -122,6 +122,26 @@ if (tokenData) {
   modify.style.visibility = "visible";
 }
 
+//fonction pour retourner sur la page d'accueil et ne plus être logger
+const clearData = () => {
+  sessionStorage.clear("token");
+};
+const accueil = document.querySelector("h1");
+
+accueil.addEventListener("click", (e) => {
+  e.preventDefault();
+  window.location.href = "./index.html";
+  clearData();
+});
+
+if (logout.innerHTML === "logout") {
+  logout.addEventListener("click", (e) => {
+    e.preventDefault();
+    window.location.href = "./index.html";
+    clearData();
+  });
+}
+
 //faire apparaitre la modal au click de modifier et la supprimer en cliquant sur la croix-------------------------------------------
 const openModal = () => {
   modal.style.visibility = "visible";
