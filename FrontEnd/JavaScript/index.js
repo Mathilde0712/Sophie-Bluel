@@ -155,14 +155,15 @@ const modalDisplay = async () => {
     )
     .join("");
   const trashCans = document.querySelectorAll(".gallery-modal .fa-trash-can");
-  trashCans.forEach((trash) => {
+  trashCans.forEach((trash, index) => {
     // const workId = trash.dataset.id;
     trash.addEventListener("click", async (e) => {
-      console.log("test", e.target.id);
+      console.log(index);
+      console.log(workData[index].id);
       e.preventDefault;
-      alert("vous avez cliqué sur la poubelle");
-
-      // await fetchDelete(workData.id);
+      await fetchDelete(workData[index].id);
+      modalDisplay();
+      workDisplay();
     });
   });
 };
@@ -170,7 +171,6 @@ const modalDisplay = async () => {
 modalDisplay();
 
 const fetchDelete = async (id) => {
-  await fetchWork();
   try {
     // let id = workData.id; //ne comprends pas pourquoi cela ne fonctionne pas
     const res = await fetch(`http://localhost:5678/api/works/${id}`, {
@@ -178,10 +178,10 @@ const fetchDelete = async (id) => {
       headers: {
         Authorization: "Bearer " + tokenData,
       },
-    }).then(() => console.log("suppression réussie"));
+    });
     if (!res.ok) console.error("Erreur lors de la suppression du projet");
   } catch (error) {
-    console.error("Erreur !");
+    console.error("Erreur !", error);
   }
 };
 
@@ -213,8 +213,10 @@ const fileInput = document.getElementById("fileItem");
 const previewImage = document.getElementById("preview");
 const imgError = document.querySelector(".error");
 let fichier;
+let titre;
 fileInput.addEventListener("change", () => {
   const file = fileInput.files[0];
+
   // Créez un objet FileReader : permet a des applications web de lire le contenu de fichier
   // new permet de créer un nouvel objet à partir de 0
   const reader = new FileReader();
@@ -228,6 +230,7 @@ fileInput.addEventListener("change", () => {
     inputAddPhoto.style.visibility = "hidden";
     imgError.style.visibility = "hidden";
     fichier = file;
+    validButton();
   } else {
     imgError.style.visibility = "visible";
   }
@@ -236,13 +239,11 @@ fileInput.addEventListener("change", () => {
 
 //passer le bouton en vert quand les 3 inputs sont remplis
 const titleInput = document.getElementById("title");
-const valid = document.querySelector(".valid");
+const valid = document.getElementById("valid");
 titleInput.addEventListener("input", (e) => {
-  console.log(e.target.value);
-  titleChecker(e.target.value);
+  titre = e.target.value;
+  validButton();
 });
-
-let titre;
 
 const titleChecker = (value) => {
   if (value.length < 1) {
@@ -255,12 +256,13 @@ const titleChecker = (value) => {
   }
 };
 //pour que le bouton passe au vert
-if (titre && fichier) {
-  alert("vous pouvez valider");
-  valid.style.backgroundColor = "#1d6154!important";
-} else {
-  valid.style.backgroundColor = "#A7A7A7 !important";
-}
+const validButton = () => {
+  if (titre && fichier) {
+    valid.classList.add("bgGreen");
+  } else {
+    valid.classList.remove("bgGreen");
+  }
+};
 
 //fermeture modal
 const closeModal2 = () => {
@@ -277,4 +279,39 @@ previous.addEventListener("click", (e) => {
   e.preventDefault();
   closeModal2();
 });
-// tous les inputs doivent être rempli pour valider
+
+// //ajouter les photos
+
+const fetchPhoto = async () => {
+  try {
+    const formData = new FormData();
+    formData.append("image", fichier);
+    formData.append("title", titre);
+    formData.append("category", "1");
+    const response = await fetch("http://localhost:5678/api/works", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        Authorization: "Bearer " + tokenData,
+      },
+      body: formData,
+    });
+    console.log("Reussie", response);
+    if (response.OK) {
+      workData = await response.json();
+    }
+  } catch (error) {
+    alert("attention ça n'a pas fonctionné");
+    console.error(error);
+  }
+};
+
+valid.addEventListener("click", async (e) => {
+  e.preventDefault();
+  await fetchPhoto();
+
+  modalDisplay();
+  workDisplay();
+  closeModal();
+  closeModal2();
+});
