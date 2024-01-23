@@ -1,4 +1,5 @@
 // import { fetchCategory, fetchWork } from "./api.js";
+// import { workDisplay, filteredWorkData } from "./api.js";
 
 //variables pour mettre dans un tableau les données de l'API
 let workData = [];
@@ -24,15 +25,18 @@ const modify = document.querySelector(".modify");
 //variable pour selectionner le aside modal
 const modal = document.querySelector(".modal");
 //variable pour sélectionner la croix de la modale
-const close1 = document.querySelector(".modal-wrapper .fa-xmark");
-const close2 = document.querySelector(".modal-add .fa-xmark");
+const crossModalWrapper = document.querySelector(".modal-wrapper .fa-xmark");
+const crossModalAdd = document.querySelector(".modal-add .fa-xmark");
 //variable pour sélectionner la gallerie dans la modale
 const galleryModal = document.querySelector(".gallery-modal");
-const addPhoto = document.querySelector(".add-photo");
+const addPhotobtn = document.querySelector(".add-photo");
 const modal2 = document.querySelector(".modal2");
 const previous = document.querySelector(".modal-add .fa-arrow-left");
 const select = document.getElementById("select");
 const option = document.createElement("option");
+const modalAdd = document.querySelector(".modal-add");
+const modalWrapper = document.querySelector(".modal-wrapper");
+
 // variable pour récupérer données API-----------------------------------------------------------------------------------------------------------
 // les projets
 const fetchWork = async () => {
@@ -45,7 +49,7 @@ const fetchWork = async () => {
   }
 };
 
-// //Les catégories
+//Les catégories
 const fetchCategory = async () => {
   try {
     await fetch("http://localhost:5678/api/categories")
@@ -126,7 +130,7 @@ if (tokenData) {
   modify.style.visibility = "visible";
 }
 
-//fonction pour retourner sur la page d'accueil et ne plus être logger
+//fonction pour retourner sur la page d'accueil et ne plus être logger quand on appuie sur sophie bluel ou sur logout
 const clearData = () => {
   sessionStorage.clear("token");
 };
@@ -146,7 +150,7 @@ if (logout.innerHTML === "logout") {
   });
 }
 
-//faire apparaitre la modal au click de modifier et la supprimer en cliquant sur la croix-------------------------------------------
+//faire apparaitre la modal au click de modifier et la supprimer en cliquant sur la croix ou en cliquant ) l'extérieur-------------------------------------------
 const openModal = () => {
   modal.style.visibility = "visible";
 };
@@ -160,11 +164,19 @@ modify.addEventListener("click", (e) => {
   openModal();
 });
 
-close1.addEventListener("click", (e) => {
+crossModalWrapper.addEventListener("click", (e) => {
   e.preventDefault();
   closeModal();
 });
 
+modal.addEventListener("click", (e) => {
+  if (!modalWrapper.contains(e.target)) {
+    e.preventDefault();
+    closeModal();
+  }
+});
+
+//fonction pour faire apparaitre les images dans la modale de suppression et fonction pour supprimer au click de la poubelle
 const modalDisplay = async () => {
   await fetchWork();
   galleryModal.innerHTML = workData
@@ -182,8 +194,6 @@ const modalDisplay = async () => {
   trashCans.forEach((trash, index) => {
     // const workId = trash.dataset.id;
     trash.addEventListener("click", async (e) => {
-      console.log(index);
-      console.log(workData[index].id);
       e.preventDefault;
       await fetchDelete(workData[index].id);
       modalDisplay();
@@ -194,9 +204,9 @@ const modalDisplay = async () => {
 
 modalDisplay();
 
+//fonction pour supprimer un projet de l'API
 const fetchDelete = async (id) => {
   try {
-    // let id = workData.id; //ne comprends pas pourquoi cela ne fonctionne pas
     const res = await fetch(`http://localhost:5678/api/works/${id}`, {
       method: "DELETE",
       headers: {
@@ -215,8 +225,23 @@ const openModal2 = () => {
   modal2.style.visibility = "visible";
 };
 
-addPhoto.addEventListener("click", (e) => {
+addPhotobtn.addEventListener("click", (e) => {
   openModal2();
+});
+
+//fermer la modale d'ajout de photo
+const closeModal2 = () => {
+  modal2.style.visibility = "hidden";
+  previewImage.style.visibility = "hidden";
+  inputAddPhoto.style.visibility = "hidden";
+};
+modal2.addEventListener("click", (e) => {
+  if (!modalAdd.contains(e.target)) {
+    e.preventDefault();
+    closeModal();
+    closeModal2();
+    resetForm();
+  }
 });
 
 // faire apparaitre les catégories dans le selecteur --------------
@@ -287,21 +312,22 @@ const validButton = () => {
   }
 };
 
-//fermeture modal
-const closeModal2 = () => {
-  modal2.style.visibility = "hidden";
-  previewImage.style.visibility = "hidden";
-  inputAddPhoto.style.visibility = "hidden";
+//fonction pour réinistialiser le formulaire quand on fait précédent ou lorsqu'on ferme la modale sans ajouter de photo
+const resetForm = () => {
+  const form = document.getElementById("form");
+  form.reset();
 };
 
-close2.addEventListener("click", (e) => {
+crossModalAdd.addEventListener("click", (e) => {
   e.preventDefault();
   closeModal2();
+  resetForm();
 });
 
 previous.addEventListener("click", (e) => {
   e.preventDefault();
   closeModal2();
+  resetForm();
 });
 
 // //ajouter les photos

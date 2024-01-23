@@ -1,6 +1,3 @@
-// "sophie.bluel@test.tld"
-// "S0phie"
-
 const userEmail = document.querySelector('input[type="email"]');
 const userPassword = document.querySelector('input[type="password"]');
 const error = document.getElementById("error");
@@ -30,7 +27,7 @@ const fetchPost = async () => {
     }
     //si on a une  erreur de recupération de données
   } catch (error) {
-    console.error("erreur!");
+    console.error(error);
   }
 };
 //on utilise click car c'est un input et non un bouton

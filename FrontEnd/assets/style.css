@@ -128,9 +128,6 @@ table {
   border-spacing: 0;
 }
 /** end reset css**/
-
-
-
 .main-container {
   max-width: 1140px;
   margin: auto;
@@ -243,7 +240,6 @@ form a {
 }
 
 .modal2{
-  
   display: flex;
   align-items: center;
   justify-content: center;
