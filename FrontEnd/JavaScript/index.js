@@ -41,9 +41,10 @@ const modalWrapper = document.querySelector(".modal-wrapper");
 // les projets
 const fetchWork = async () => {
   try {
-    await fetch("http://localhost:5678/api/works")
-      .then((res) => res.json())
-      .then((data) => (workData = data));
+    const response = await fetch("http://localhost:5678/api/works");
+    const data = await response.json();
+    workData = data;
+    return workData;
   } catch (error) {
     console.error(error);
   }
@@ -52,9 +53,10 @@ const fetchWork = async () => {
 //Les catégories
 const fetchCategory = async () => {
   try {
-    await fetch("http://localhost:5678/api/categories")
-      .then((res) => res.json())
-      .then((category) => (categoriesData = category));
+    const response = await fetch("http://localhost:5678/api/categories");
+    const category = await response.json();
+    categoriesData = category;
+    return categoriesData;
   } catch (error) {
     console.error(error);
   }
