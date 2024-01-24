@@ -1,5 +1,4 @@
-// import { fetchCategory, fetchWork } from "./api.js";
-// import { workDisplay, filteredWorkData } from "./api.js";
+// import { fetchCategory, fetchWork, workDisplay, filteredWorkData } from "./modules.js";
 
 //variables pour mettre dans un tableau les données de l'API
 let workData = [];
@@ -32,7 +31,6 @@ const galleryModal = document.querySelector(".gallery-modal");
 const addPhotobtn = document.querySelector(".add-photo");
 const modal2 = document.querySelector(".modal2");
 const previous = document.querySelector(".modal-add .fa-arrow-left");
-const select = document.getElementById("select");
 const option = document.createElement("option");
 const modalAdd = document.querySelector(".modal-add");
 const modalWrapper = document.querySelector(".modal-wrapper");
@@ -187,19 +185,19 @@ const modalDisplay = async () => {
         `
     <figure>
   <img src = "${work.imageUrl}" alt="Photo de ${work.title}">
-  <i class="fa-solid fa-trash-can" data-id="${workData.id}"></i>
+  <i class="fa-solid fa-trash-can"></i>
   </figure>
   `
     )
     .join("");
   const trashCans = document.querySelectorAll(".gallery-modal .fa-trash-can");
   trashCans.forEach((trash, index) => {
-    // const workId = trash.dataset.id;
     trash.addEventListener("click", async (e) => {
-      e.preventDefault;
       await fetchDelete(workData[index].id);
+      e.preventDefault;
       modalDisplay();
       workDisplay();
+      alert("Votre projet a été supprimé !");
     });
   });
 };
@@ -215,7 +213,9 @@ const fetchDelete = async (id) => {
         Authorization: "Bearer " + tokenData,
       },
     });
-    if (!res.ok) console.error("Erreur lors de la suppression du projet");
+    if (!res.ok) {
+      console.log("erreur lors de la suppression");
+    }
   } catch (error) {
     console.error(error);
   }
@@ -228,6 +228,7 @@ const openModal2 = () => {
 };
 
 addPhotobtn.addEventListener("click", (e) => {
+  e.preventDefault;
   openModal2();
 });
 
@@ -236,6 +237,7 @@ const closeModal2 = () => {
   modal2.style.visibility = "hidden";
   previewImage.style.visibility = "hidden";
   inputAddPhoto.style.visibility = "hidden";
+  imgError.style.visibility = "hidden";
 };
 modal2.addEventListener("click", (e) => {
   if (!modalAdd.contains(e.target)) {
@@ -252,10 +254,11 @@ const selectDisplay = async () => {
   select.innerHTML = categoriesData.map(
     (category) =>
       `
-  <option>${category.name}</option>
+  <option value="${category.id}">${category.name}</option>
   `
   );
 };
+
 selectDisplay();
 
 // faire apparaitre visuellement l'image après le téléchargement
@@ -286,13 +289,13 @@ fileInput.addEventListener("change", () => {
   } else {
     imgError.style.visibility = "visible";
   }
-  console.log(fichier);
 });
 
 //passer le bouton en vert quand les 3 inputs sont remplis
 const titleInput = document.getElementById("title");
 const valid = document.getElementById("valid");
 titleInput.addEventListener("input", (e) => {
+  e.preventDefault;
   titre = e.target.value;
   validButton();
 });
@@ -314,32 +317,41 @@ const validButton = () => {
   }
 };
 
-//fonction pour réinistialiser le formulaire quand on fait précédent ou lorsqu'on ferme la modale sans ajouter de photo
 const resetForm = () => {
   const form = document.getElementById("form");
   form.reset();
 };
 
+const resetFormImg = () => {
+  const formImg = document.getElementById("formImg");
+  formImg.reset();
+};
+
 crossModalAdd.addEventListener("click", (e) => {
   e.preventDefault();
   closeModal2();
+  valid.classList.remove("bgGreen");
+  resetFormImg();
   resetForm();
 });
 
 previous.addEventListener("click", (e) => {
   e.preventDefault();
   closeModal2();
+  valid.classList.remove("bgGreen");
+  resetFormImg();
   resetForm();
 });
 
 // //ajouter les photos
+const select = document.getElementById("select");
 
 const fetchPhoto = async () => {
   try {
     const formData = new FormData();
     formData.append("image", fichier);
     formData.append("title", titre);
-    formData.append("category", "1");
+    formData.append("category", select.value);
     const response = await fetch("http://localhost:5678/api/works", {
       method: "POST",
       headers: {
@@ -348,7 +360,6 @@ const fetchPhoto = async () => {
       },
       body: formData,
     });
-    console.log("Reussie", response);
     if (response.OK) {
       workData = await response.json();
     }
@@ -358,10 +369,18 @@ const fetchPhoto = async () => {
 };
 
 valid.addEventListener("click", async (e) => {
-  e.preventDefault();
-  await fetchPhoto();
-  modalDisplay();
-  workDisplay();
-  closeModal();
-  closeModal2();
+  if (valid.classList.contains("bgGreen")) {
+    e.preventDefault();
+    await fetchPhoto();
+    alert("Votre projet a été ajouté !");
+    modalDisplay();
+    workDisplay();
+    valid.classList.remove("bgGreen");
+    resetFormImg();
+    resetForm();
+    closeModal();
+    closeModal2();
+  } else {
+    alert("Veuillez remplir tous les champs");
+  }
 });
