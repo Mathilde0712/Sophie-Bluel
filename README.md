@@ -25,8 +25,6 @@ Vous listez vos 3 missions principales. Vous devez donc développer :
 
 ## Information pour cloner le repertoire :
 
-Lien pour cloner le repertoire [git@github.com:Mathilde0712/Sophie-Bluel.git](git@github.com:Mathilde0712/Sophie-Bluel.git)
-
 ```
 git clone git@github.com:Mathilde0712/Sophie-Bluel.git
 ```
