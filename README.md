@@ -1,3 +1,11 @@
+Projet 6 de la formation Intégrateur Web d'Openclassrooms
+
+Compétences évaluées :
+
+- Gérer les événements utilisateurs avec JavaScript
+- Manipuler les éléments du DOM avec JavaScript
+- Récupérer les données utilisateurs dans le JavaScript via des formulaires
+
 # Portfolio-architecte-sophie-bluel
 
 Vous travaillez comme développeur front-end pour l’agence ArchiWebos qui comprend 50 salariés.
@@ -17,7 +25,11 @@ Vous listez vos 3 missions principales. Vous devez donc développer :
 
 ## Information pour cloner le repertoire :
 
-Lien pour cloner [le repertoire](git@github.com:Mathilde0712/Sophie-Bluel.git)
+Lien pour cloner le repertoire [git@github.com:Mathilde0712/Sophie-Bluel.git](git@github.com:Mathilde0712/Sophie-Bluel.git)
+
+```
+git clone git@github.com:Mathilde0712/Sophie-Bluel.git
+```
 
 ## Information pour le lancer le backend
 
@@ -25,11 +37,16 @@ Lien pour cloner [le repertoire](git@github.com:Mathilde0712/Sophie-Bluel.git)
   Une fois les dépendances installées lancez le projet avec la commande `npm start`
 
 Compte de test pour Sophie Bluel
-email: sophie.bluel@test.tld
-password: S0phie
 
-Lien pour voir
-[la documentation Swagger](http://localhost:5678/api-docs/)
+```
+email: sophie.bluel@test.tld
+
+password: S0phie
+```
+
+Lien pour voir la documentation Swagger
+[http://localhost:5678/api-docs/](http://localhost:5678/api-docs/)
+
 Pour lire la documentation, utiliser Chrome ou Firefox
 
 - Si vous désirez afficher le code du backend et du frontend, faites le dans 2 instances de VSCode différentes pour éviter tout problème
