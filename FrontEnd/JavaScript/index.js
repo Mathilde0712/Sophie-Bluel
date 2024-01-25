@@ -1,5 +1,3 @@
-// import { fetchCategory, fetchWork, workDisplay, filteredWorkData } from "./modules.js";
-
 //variables pour mettre dans un tableau les données de l'API
 let workData = [];
 let categoriesData = [];
@@ -131,22 +129,12 @@ if (tokenData) {
 }
 
 //fonction pour retourner sur la page d'accueil et ne plus être logger quand on appuie sur sophie bluel ou sur logout
-const clearData = () => {
-  sessionStorage.clear("token");
-};
-const accueil = document.querySelector("h1");
-
-accueil.addEventListener("click", (e) => {
-  e.preventDefault();
-  window.location.href = "./index.html";
-  clearData();
-});
 
 if (logout.innerHTML === "logout") {
   logout.addEventListener("click", (e) => {
     e.preventDefault();
     window.location.href = "./index.html";
-    clearData();
+    sessionStorage.clear("token");
   });
 }
 
@@ -267,6 +255,7 @@ const inputAddPhoto = document.querySelector(".input-addPhoto");
 const fileInput = document.getElementById("fileItem");
 const previewImage = document.getElementById("preview");
 const imgError = document.querySelector(".error");
+const select = document.getElementById("select");
 let fichier;
 let titre;
 fileInput.addEventListener("change", () => {
@@ -333,6 +322,7 @@ crossModalAdd.addEventListener("click", (e) => {
   valid.classList.remove("bgGreen");
   resetFormImg();
   resetForm();
+  closeModal();
 });
 
 previous.addEventListener("click", (e) => {
@@ -344,7 +334,6 @@ previous.addEventListener("click", (e) => {
 });
 
 // //ajouter les photos
-const select = document.getElementById("select");
 
 const fetchPhoto = async () => {
   try {
