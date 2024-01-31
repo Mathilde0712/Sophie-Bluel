@@ -233,7 +233,7 @@ form a {
   text-align: center;
 }
 
-span {
+#error {
   margin-top: 20px;
 color: red;
 }

@@ -19,7 +19,7 @@ const fetchPost = async () => {
     });
     if (response.status === 200) {
       const tokenData = await response.json();
-      sessionStorage.userId = tokenData.userId;
+      // sessionStorage.userId = tokenData.userId;
       sessionStorage.token = tokenData.token;
       window.location.href = "./index.html";
     } else {

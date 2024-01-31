@@ -1,39 +1,8 @@
+//Gestion des API work & catégory
 //variables pour mettre dans un tableau les données de l'API
 let workData = [];
 let categoriesData = [];
 
-//variables pour récupérer le conteneur de la gallerie
-const gallery = document.querySelector(".gallery");
-//variables pour sélectionne le conteneur des filtres
-const FilterContainer = document.querySelector(".filter-container");
-//Variables pour sélectionner les filtres du DOM
-const objects = document.querySelector(".objects");
-const all = document.querySelector(".all");
-const apartments = document.querySelector(".apartments");
-const hotels = document.querySelector(".hotels");
-//variable pour sélectionner le block édition
-const edition = document.querySelector(".edition_mode");
-//variable pour selectionner le header
-const header = document.querySelector("header");
-//variable pour selectionner le text login/logout
-const logout = document.getElementById("logout");
-//variables pour sélectionner le conteneur modifier
-const modify = document.querySelector(".modify");
-//variable pour selectionner le aside modal
-const modal = document.querySelector(".modal");
-//variable pour sélectionner la croix de la modale
-const crossModalWrapper = document.querySelector(".modal-wrapper .fa-xmark");
-const crossModalAdd = document.querySelector(".modal-add .fa-xmark");
-//variable pour sélectionner la gallerie dans la modale
-const galleryModal = document.querySelector(".gallery-modal");
-const addPhotobtn = document.querySelector(".add-photo");
-const modal2 = document.querySelector(".modal2");
-const previous = document.querySelector(".modal-add .fa-arrow-left");
-const option = document.createElement("option");
-const modalAdd = document.querySelector(".modal-add");
-const modalWrapper = document.querySelector(".modal-wrapper");
-
-// variable pour récupérer données API-----------------------------------------------------------------------------------------------------------
 // les projets
 const fetchWork = async () => {
   try {
@@ -58,7 +27,18 @@ const fetchCategory = async () => {
   }
 };
 
-// fonction pour filtrer les catégories et les afficher = fonction générale avec base catégorie TOUS----------------------------------------------
+// Gestion de l'ajout des projets, gestion des filtres et des boutons filtres ------
+
+//variables pour récupérer le conteneur de la gallerie
+const gallery = document.querySelector(".gallery");
+//variables pour sélectionne le conteneur des filtres
+const FilterContainer = document.querySelector(".filter-container");
+//Variables pour sélectionner les filtres du DOM
+const objects = document.querySelector(".objects");
+const all = document.querySelector(".all");
+const apartments = document.querySelector(".apartments");
+const hotels = document.querySelector(".hotels");
+
 const filteredWorkData = (myData, category) => {
   if (category === "Tous") return myData;
   return myData.filter((work) => work.category.name === category);
@@ -83,7 +63,7 @@ const workDisplay = async (category = "Tous") => {
 
 workDisplay();
 
-//creation fonction pour mettre la classe checked sur les boutons et l'enlever -------------------------------------------------------------------
+//creation fonction pour mettre la classe checked sur les boutons et l'enlever -----
 const setActiveButton = (activeBtn) => {
   const buttons = document.querySelectorAll(".btn");
   buttons.forEach((button) => {
@@ -95,7 +75,7 @@ const setActiveButton = (activeBtn) => {
   });
 };
 
-//ecouteurs d'évènements pour filtrer au click---------------------------------------------------------------------------------------------------------------------
+//ecouteurs d'évènements pour filtrer au click----
 objects.addEventListener("click", () => {
   workDisplay("Objets");
   setActiveButton(objects);
@@ -116,7 +96,16 @@ all.addEventListener("click", () => {
   setActiveButton(all);
 });
 
-//modifier le code html après connexion---------------------------------------------------------------------------------
+//Gestion de la page d'accueil avec connexion-----
+
+//variable pour sélectionner le block édition
+const edition = document.querySelector(".edition_mode");
+const header = document.querySelector("header");
+//variable pour selectionner le text login/logout
+const logout = document.getElementById("logout");
+//variables pour sélectionner le conteneur modifier
+const modify = document.querySelector(".modify");
+
 //recuperer le token
 const tokenData = sessionStorage.getItem("token");
 //si token connecté alors changer  styles
@@ -128,7 +117,7 @@ if (tokenData) {
   modify.style.visibility = "visible";
 }
 
-//fonction pour retourner sur la page d'accueil et ne plus être logger quand on appuie sur sophie bluel ou sur logout
+//fonction pour retourner sur la page d'accueil et ne plus être logger quand on appuie sur logout
 
 if (logout.innerHTML === "logout") {
   logout.addEventListener("click", (e) => {
@@ -138,7 +127,16 @@ if (logout.innerHTML === "logout") {
   });
 }
 
-//faire apparaitre la modal au click de modifier et la supprimer en cliquant sur la croix ou en cliquant ) l'extérieur-------------------------------------------
+// Gestion de la modale de suppression -----
+//variable pour selectionner le aside modal
+const modal = document.querySelector(".modal");
+//variable pour sélectionner la croix de la modale
+const crossModalWrapper = document.querySelector(".modal-wrapper .fa-xmark");
+//variable pour sélectionner la gallerie dans la modale
+const galleryModal = document.querySelector(".gallery-modal");
+const addPhotobtn = document.querySelector(".add-photo");
+const modalWrapper = document.querySelector(".modal-wrapper");
+
 const openModal = () => {
   modal.style.visibility = "visible";
 };
@@ -209,7 +207,13 @@ const fetchDelete = async (id) => {
   }
 };
 
-// ouvrir la modale pour ajouter une photo ----------------------
+// Gestion de la modale d'ajout des photos -----
+const crossModalAdd = document.querySelector(".modal-add .fa-xmark");
+const modal2 = document.querySelector(".modal2");
+const previous = document.querySelector(".modal-add .fa-arrow-left");
+const option = document.createElement("option");
+const modalAdd = document.querySelector(".modal-add");
+
 const openModal2 = () => {
   inputAddPhoto.style.visibility = "visible";
   modal2.style.visibility = "visible";
@@ -236,17 +240,27 @@ modal2.addEventListener("click", (e) => {
   }
 });
 
-// faire apparaitre les catégories dans le selecteur --------------
+// faire apparaitre les catégories dans le selecteur
 const selectDisplay = async () => {
   await fetchCategory();
-  select.innerHTML = categoriesData.map(
-    (category) =>
-      `
-  <option value="${category.id}">${category.name}</option>
-  `
-  );
+  //   select.innerHTML = categoriesData.map(
+  //     (category) =>
+  //       `
+  //   <option value="${category.id}">${category.name}</option>
+  //   `
+  //   );
+  // };
+  select.innerHTML = `
+ <option value="">Choissisez la catégorie</option>
+ ${categoriesData
+   .map(
+     (category) => `
+   <option value="${category.id}">${category.name}</option>
+ `
+   )
+   .join("")}
+`;
 };
-
 selectDisplay();
 
 // faire apparaitre visuellement l'image après le téléchargement
@@ -281,6 +295,13 @@ fileInput.addEventListener("change", () => {
 });
 
 //passer le bouton en vert quand les 3 inputs sont remplis
+select.addEventListener("input", (e) => {
+  e.preventDefault();
+  if (select.value !== categoriesData.id) {
+    validButton();
+  }
+});
+
 const titleInput = document.getElementById("title");
 const valid = document.getElementById("valid");
 titleInput.addEventListener("input", (e) => {
@@ -297,9 +318,10 @@ const titleChecker = (value) => {
     titre = value;
   }
 };
+
 //pour que le bouton passe au vert
 const validButton = () => {
-  if (titre && fichier) {
+  if (fichier && titre && select.value) {
     valid.classList.add("bgGreen");
   } else {
     valid.classList.remove("bgGreen");
@@ -316,6 +338,7 @@ const resetFormImg = () => {
   formImg.reset();
 };
 
+//fermer les modales au click de la croix et revenir sur la modale précédente au click de la flèche
 crossModalAdd.addEventListener("click", (e) => {
   e.preventDefault();
   closeModal2();
@@ -333,8 +356,7 @@ previous.addEventListener("click", (e) => {
   resetForm();
 });
 
-// //ajouter les photos
-
+// Gestion d'ajout des photos-----
 const fetchPhoto = async () => {
   try {
     const formData = new FormData();

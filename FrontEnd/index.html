@@ -16,7 +16,7 @@
     ></script>
     <meta name="description" content="" />
     <link rel="stylesheet" href="./assets/style.css" />
-    <script type="module" src="./JavaScript/index.js" ></script>
+    <script src="./JavaScript/index.js" defer></script>
     
   </head>
   <body>
@@ -108,7 +108,10 @@
                   <label for="title">Titre</label>
                   <input type="text" name="title" id="title" />
                   <label for="select">Catégorie</label>
-                  <select name="select" id="select" ></select>
+                  <select name="select" id="select" >
+                    <option value="">Choisir votre catégorie ?</option>
+                  </select>
+
                 </form>
               </div>
               <input class="valid" id="valid" type="submit" value="Valider" />
