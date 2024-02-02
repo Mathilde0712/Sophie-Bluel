@@ -243,13 +243,6 @@ modal2.addEventListener("click", (e) => {
 // faire apparaitre les catégories dans le selecteur
 const selectDisplay = async () => {
   await fetchCategory();
-  //   select.innerHTML = categoriesData.map(
-  //     (category) =>
-  //       `
-  //   <option value="${category.id}">${category.name}</option>
-  //   `
-  //   );
-  // };
   select.innerHTML = `
  <option value="">Choissisez la catégorie</option>
  ${categoriesData
