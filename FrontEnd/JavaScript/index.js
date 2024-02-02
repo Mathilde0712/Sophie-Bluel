@@ -303,15 +303,6 @@ titleInput.addEventListener("input", (e) => {
   validButton();
 });
 
-const titleChecker = (value) => {
-  if (value.length < 1) {
-    console.log("manque le titre");
-  } else {
-    console.log("pas d'erreur");
-    titre = value;
-  }
-};
-
 //pour que le bouton passe au vert
 const validButton = () => {
   if (fichier && titre && select.value) {
